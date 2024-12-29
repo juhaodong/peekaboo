@@ -31,9 +31,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.interop.UIKitView
+import androidx.compose.ui.viewinterop.UIKitView
 import kotlinx.cinterop.BetaInteropApi
-import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.addressOf
@@ -77,7 +76,6 @@ import platform.AVFoundation.authorizationStatusForMediaType
 import platform.AVFoundation.fileDataRepresentation
 import platform.AVFoundation.position
 import platform.AVFoundation.requestAccessForMediaType
-import platform.CoreGraphics.CGRect
 import platform.CoreGraphics.CGRectMake
 import platform.CoreMedia.CMSampleBufferGetImageBuffer
 import platform.CoreMedia.CMSampleBufferRef
@@ -93,8 +91,6 @@ import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSSelectorFromString
 import platform.Foundation.dataWithBytes
-import platform.QuartzCore.CATransaction
-import platform.QuartzCore.kCATransactionDisableActions
 import platform.UIKit.UIDevice
 import platform.UIKit.UIDeviceOrientation
 import platform.UIKit.UIGraphicsBeginImageContextWithOptions
@@ -153,9 +149,9 @@ actual fun PeekabooCamera(
     }
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(Color.Black),
+        modifier
+            .fillMaxSize()
+            .background(Color.Black),
         contentAlignment = Alignment.Center,
     ) {
         when (cameraAccess) {
@@ -245,10 +241,10 @@ private fun BoxScope.AuthorizedCamera(
                 deviceTypes = deviceTypes,
                 mediaType = AVMediaTypeVideo,
                 position =
-                    when (cameraMode) {
-                        CameraMode.Front -> AVCaptureDevicePositionFront
-                        CameraMode.Back -> AVCaptureDevicePositionBack
-                    },
+                when (cameraMode) {
+                    CameraMode.Front -> AVCaptureDevicePositionFront
+                    CameraMode.Back -> AVCaptureDevicePositionBack
+                },
             ).devices.firstOrNull() as? AVCaptureDevice
         }
 
@@ -271,9 +267,9 @@ private fun BoxScope.AuthorizedCamera(
     if (!cameraReady) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.Black),
+            Modifier
+                .fillMaxSize()
+                .background(Color.Black),
         )
     }
 }
@@ -289,10 +285,10 @@ private fun AuthorizedCamera(
                 deviceTypes = deviceTypes,
                 mediaType = AVMediaTypeVideo,
                 position =
-                    when (state.cameraMode) {
-                        CameraMode.Front -> AVCaptureDevicePositionFront
-                        CameraMode.Back -> AVCaptureDevicePositionBack
-                    },
+                when (state.cameraMode) {
+                    CameraMode.Front -> AVCaptureDevicePositionFront
+                    CameraMode.Back -> AVCaptureDevicePositionBack
+                },
             ).devices.firstOrNull() as? AVCaptureDevice
         }
 
@@ -312,9 +308,9 @@ private fun AuthorizedCamera(
     if (!state.isCameraReady) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.Black),
+            Modifier
+                .fillMaxSize()
+                .background(Color.Black),
         )
     }
 }
@@ -481,9 +477,9 @@ private fun BoxScope.RealDeviceCamera(
         NSNotificationCenter.defaultCenter.addObserver(
             observer = listener,
             selector =
-                NSSelectorFromString(
-                    OrientationListener::orientationDidChange.name + ":",
-                ),
+            NSSelectorFromString(
+                OrientationListener::orientationDidChange.name + ":",
+            ),
             name = notificationName,
             `object` = null,
         )
@@ -497,8 +493,7 @@ private fun BoxScope.RealDeviceCamera(
     }
 
     UIKitView(
-        modifier = Modifier.fillMaxSize(),
-        background = Color.Black,
+        modifier = Modifier.fillMaxSize().background(Color.Black),
         factory = {
             val dispatchGroup = dispatch_group_create()
             val cameraContainer = UIView()
@@ -518,13 +513,6 @@ private fun BoxScope.RealDeviceCamera(
                 onCameraReady()
             }
             cameraContainer
-        },
-        onResize = { view: UIView, rect: CValue<CGRect> ->
-            CATransaction.begin()
-            CATransaction.setValue(true, kCATransactionDisableActions)
-            view.layer.setFrame(rect)
-            cameraPreviewLayer.setFrame(rect)
-            CATransaction.commit()
         },
     )
     // Call the triggerCapture lambda when the capture button is clicked
@@ -645,9 +633,9 @@ private fun RealDeviceCamera(
         NSNotificationCenter.defaultCenter.addObserver(
             observer = listener,
             selector =
-                NSSelectorFromString(
-                    OrientationListener::orientationDidChange.name + ":",
-                ),
+            NSSelectorFromString(
+                OrientationListener::orientationDidChange.name + ":",
+            ),
             name = notificationName,
             `object` = null,
         )
@@ -662,8 +650,7 @@ private fun RealDeviceCamera(
     }
 
     UIKitView(
-        modifier = modifier,
-        background = Color.Black,
+        modifier = modifier.background(Color.Black),
         factory = {
             val dispatchGroup = dispatch_group_create()
             val cameraContainer = UIView()
@@ -678,13 +665,6 @@ private fun RealDeviceCamera(
                 state.onCameraReady()
             }
             cameraContainer
-        },
-        onResize = { view: UIView, rect: CValue<CGRect> ->
-            CATransaction.begin()
-            CATransaction.setValue(true, kCATransactionDisableActions)
-            view.layer.setFrame(rect)
-            cameraPreviewLayer.setFrame(rect)
-            CATransaction.commit()
         },
     )
 }
