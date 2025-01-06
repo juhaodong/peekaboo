@@ -35,7 +35,7 @@ publishing {
 
         // Provide artifacts information required by Maven Central
         pom {
-            name.set("peekaboo")
+            name.set("io")
             description.set(
                 "Kotlin Multiplatform library for Compose Multiplatform, " +
                     "designed for seamless integration of an image picker feature in iOS " +
@@ -51,9 +51,9 @@ publishing {
             }
             developers {
                 developer {
-                    id.set("onseok")
-                    name.set("onseok")
-                    email.set("dnjstjr245@gmail.com")
+                    id.set("is4yno")
+                    name.set("is4yno")
+                    email.set("juhaodong@gmail.com")
                 }
             }
             issueManagement {
@@ -61,21 +61,14 @@ publishing {
                 url.set("https://github.com/onseok/peekaboo/issues")
             }
             scm {
-                connection.set("https://github.com/onseok/peekaboo.git")
-                url.set("https://github.com/onseok/peekaboo")
+                connection.set("https://github.com/juhaodong/peekaboo.git")
+                url.set("https://github.com/juhaodong/peekaboo")
             }
         }
     }
 }
 
 signing {
-    if (project.hasProperty("signing.gnupg.keyName")) {
-        useGpgCmd()
-    }
-    useInMemoryPgpKeys(
-        System.getenv("OSSRH_GPG_SECRET_KEY"),
-        System.getenv("OSSRH_GPG_SECRET_KEY_PASSWORD"),
-    )
     sign(publishing.publications)
 }
 

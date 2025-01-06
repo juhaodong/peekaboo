@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     id("module.publication")
+    alias(libs.plugins.kotlinMultiplatform)
 }
 
 kotlin {
